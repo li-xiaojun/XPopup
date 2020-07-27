@@ -32,6 +32,7 @@ public class SmartDragLayout extends FrameLayout implements NestedScrollingParen
     boolean isUserClose = false;
     boolean isThreeDrag = false;  //是否开启三段拖拽
     LayoutStatus status = LayoutStatus.Close;
+
     public SmartDragLayout(Context context) {
         this(context, null);
     }
@@ -89,6 +90,7 @@ public class SmartDragLayout extends FrameLayout implements NestedScrollingParen
     }
 
     float touchX, touchY;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (scroller.computeScrollOffset()) {
@@ -219,7 +221,9 @@ public class SmartDragLayout extends FrameLayout implements NestedScrollingParen
         post(new Runnable() {
             @Override
             public void run() {
-                smoothScroll(minY - getScrollY(), false);
+//                smoothScroll(minY - getScrollY(), false);
+                scroller.startScroll(getScrollX(), getScrollY(), 0, minY - getScrollY(), (int) (XPopup.getAnimationDuration() * 0.8f));
+                ViewCompat.postInvalidateOnAnimation(SmartDragLayout.this);
             }
         });
     }
@@ -228,7 +232,7 @@ public class SmartDragLayout extends FrameLayout implements NestedScrollingParen
         post(new Runnable() {
             @Override
             public void run() {
-                scroller.startScroll(getScrollX(), getScrollY(), 0, dy, (int)(isOpen ? XPopup.getAnimationDuration() : XPopup.getAnimationDuration()*0.8f));
+                scroller.startScroll(getScrollX(), getScrollY(), 0, dy, (int) (isOpen ? XPopup.getAnimationDuration() : XPopup.getAnimationDuration() * 0.8f));
                 ViewCompat.postInvalidateOnAnimation(SmartDragLayout.this);
             }
         });
